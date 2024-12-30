@@ -52,7 +52,7 @@ const Navbar = () => {
             Our Providers
           </a>
           <a
-            href="/"
+            href="/blogs"
             className="font-tight text-white transition duration-150 ease-in-out"
           >
             Blog
@@ -100,7 +100,7 @@ const Navbar = () => {
             Our Providers
           </a>
           <a
-            href="/"
+            href="/blogs"
             className="block px-3 py-2 rounded-md text-base font-medium text-black hover:bg-gray-700 hover:text-white"
           >
             Blog
@@ -112,7 +112,7 @@ const Navbar = () => {
             Patients Portal
           </a>
           <a
-            href="/"
+            href="/teens"
             className="block px-3 py-2 rounded-md text-base font-medium text-black hover:bg-gray-700 hover:text-white"
           >
             Teens
