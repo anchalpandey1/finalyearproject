@@ -64,7 +64,7 @@ const Navbar = () => {
             Patients Portal
           </a>
           <a
-            href="/"
+            href="/teens"
             className="font-tight text-white transition duration-150 ease-in-out"
           >
             Teens

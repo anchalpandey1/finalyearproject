@@ -6,6 +6,8 @@ import { HelmetProvider } from "react-helmet-async";
 
 import App from "./App.jsx";
 import Home from "./pages/Home/Home.jsx";
+import Teen from "./pages/Teen/Teen.jsx";
+import Blog from "./pages/Blogs/Blog.jsx";
 
 
 const router = createBrowserRouter(
@@ -14,7 +16,8 @@ const router = createBrowserRouter(
     {/* <Route path="/" element={<App/>}/> */}
 
     <Route path="/" element={<Home/>}/>
-     
+     <Route path="/teens" element={<Teen/>}/>
+     <Route path="/blogs" element={<Blog/>}/>
     </Route>
   )
 )

@@ -69,7 +69,7 @@ const TestimonialCards = () => {
               className="flex-shrink-0 w-1/3 bg-white  shadow-lg shadow-gray-400 rounded-lg p-6 mx-3"
             >
               <div className="text-8xl text-green-500 font-bold ">“</div>
-              <p className="text-black text-lg mb-6 italic">
+              <p className="text-black text-lg mb-6 font-cursive">
                 {testimonial.text}
               </p>
               <div className="flex items-center mt-4">
