@@ -105,6 +105,7 @@ const TeenCards = () => {
                     </div>
                 ))}
             </div>
+            
             <div className="flex flex-col justify-center mt-10">
                 <div className="relative flex flex-col md:flex-row md:space-x-5 space-y-3 md:space-y-0 rounded-xl shadow-lg p-6 max-w-xs md:max-w-6xl mx-auto border border-white bg-[#F5F5F7]">
                     <div className="w-full md:w-2/5 grid place-items-center">

@@ -4,7 +4,7 @@ import Navbar from '../../components/Navbar/Navbar'
 import Footer from '../../components/Footer/FOOTER.JSX'
 import MoreHero from '../../components/Hero/MoreHero'
 import SkillsRow from '../../components/Teens/SkillsRow'
-import BlogCards from './BlogCards'
+import BlogCards from '../../components/Blog/BlogCards'
 
 const Blog = () => {
     return (
