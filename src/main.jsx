@@ -16,24 +16,36 @@ import PrivacySecurity from "./pages/Setting/PrivacySecurity.jsx";
 import Accessibility from "./pages/Setting/Accessibility.jsx";
 import Term from "./pages/Setting/Term.jsx";
 import PateintPortal from "./pages/Patient/PateintPortal.jsx";
+import Profile from "./pages/Doctors/Profile.jsx";
+import Patient from "./pages/Doctors/Patient.jsx";
+import Payments from "./pages/Doctors/Payments.jsx";
+import Video from "./pages/Doctors/Video.jsx";
+import VoiceCall from "./pages/Doctors/VoiceCall.jsx";
+import ChatInterface from "./pages/Doctors/ChatInterface.jsx";
 
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-    {/* <Route path="/" element={<App/>}/> */}
+      {/* <Route path="/" element={<App/>}/> */}
 
-    <Route path="/" element={<Home/>}/>
-     <Route path="/teens" element={<Teen/>}/>
-     <Route path="/blogs" element={<Blog/>}/>
-     <Route path="/signup" element={<Signup/>}/>
-     <Route path="/login" element={<Login/>}/>
-     <Route path="/settings" element={<Setting/>}/>
-     <Route path="/myprofile" element={<MyProfile/>}/>
-   <Route path="/privacy" element={<PrivacySecurity/>}/>
-   <Route path="/accessibility" element={<Accessibility/>}/>
-   <Route path="/termandcondition" element={<Term/>}/>
-   <Route path="/patients" element={<PateintPortal/>}/>
+      <Route path="/" element={<Home />} />
+      <Route path="/teens" element={<Teen />} />
+      <Route path="/blogs" element={<Blog />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/settings" element={<Setting />} />
+      <Route path="/myprofile" element={<MyProfile />} />
+      <Route path="/privacy" element={<PrivacySecurity />} />
+      <Route path="/accessibility" element={<Accessibility />} />
+      <Route path="/termandcondition" element={<Term />} />
+      <Route path="/patients" element={<PateintPortal />} />
+      <Route path="/doctorprofile" element={<Profile />}/>
+      <Route path="/patientform" element={<Patient/>}/>
+      <Route path="/payment" element={<Payments/>}/>
+      <Route path="/videocall" element={<Video/>}/>
+      <Route path="/voicecall" element={<VoiceCall/>}/>
+      <Route path="/chat" element={<ChatInterface/>}/>
     </Route>
   )
 )
