@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import profile from "../../assets/profile.png";
 import ProfileSetting from "./ProfileSetting";
 import NotificationSettings from "./NotificationSettings";
@@ -12,6 +13,19 @@ function Settings() {
     const [activeComponent, setActiveComponent] = useState("profile"); 
     const navigate = useNavigate();
 
+    const handleLogout = async () => {
+        try {
+            const token = localStorage.getItem("accessToken"); 
+            await axios.post("https://doctormanagement.onrender.com/api/v1/patients/logout", {}, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            localStorage.clear(); 
+            navigate("/"); 
+        } catch (error) {
+            console.error("Logout failed:", error.response?.data || error.message);
+        }
+    };
     return (
         <div className="flex min-h-screen bg-white">
             {/* Sidebar */}
@@ -20,7 +34,8 @@ function Settings() {
                     <img
                         src={profile}
                         alt="Profile"
-                        className="w-16 h-16 rounded-full mx-5"
+                        className="w-16 h-16 rounded-full mx-5 cursor-pointer"
+                        onClick={() => navigate("/myprofile")}
                     />
                     <div className="flex items-center space-x-2">
                         <h2 className="text-xl font-bold">Settings</h2>
@@ -240,16 +255,8 @@ function Settings() {
                             Help & Support
                         </li>
                         <li
-                          onClick={() => {
-  localStorage.clear();
-  navigate("/login");
-}}
-
-                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${
-                                activeComponent === "logout"
-                                    ? "bg-gray-200 text-black"
-                                    : "text-gray-600 hover:bg-gray-100"
-                            }`}
+                            onClick={handleLogout}
+                            className="flex items-center px-6 py-3 cursor-pointer rounded-lg text-gray-600 hover:bg-gray-100"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -262,10 +269,10 @@ function Settings() {
                                 <path
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
-                                    d="M9 18h6m-3-6V6"
+                                    d="M17 16l4-4m0 0l-4-4m4 4H7"
                                 />
                             </svg>
-                           Logout
+                            Logout
                         </li>
                     </ul>
                 </nav>

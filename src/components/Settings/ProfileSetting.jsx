@@ -1,84 +1,3 @@
-// import React from 'react'
-
-// const ProfileSetting = () => {
-//   return (
-//     <div>
-//           <form className="mt-6 bg-white shadow-md rounded-lg p-6">
-//                     <div className="grid grid-cols-2 gap-4">
-//                         <div>
-//                             <label className="block text-gray-700">First Name*</label>
-//                             <input
-//                                 type="text"
-//                                 className="mt-1 block w-full border border-gray-300 bg-[#D9D9D9] rounded-lg p-2 focus:outline-none focus:ring focus:ring-blue-500"
-//                             />
-//                         </div>
-//                         <div>
-//                             <label className="block text-gray-700">Last Name</label>
-//                             <input
-//                                 type="text"
-//                                 className="mt-1 block w-full bg-[#D9D9D9] border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:ring-blue-500"
-//                             />
-//                         </div>
-//                         <div>
-//                             <label className="block text-gray-700">Email</label>
-//                             <input
-//                                 type="email"
-//                                 className="mt-1 block w-full bg-[#D9D9D9] border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:ring-blue-500"
-//                             />
-//                         </div>
-//                         <div>
-//                             <label className="block text-gray-700">Mobile Number</label>
-//                             <input
-//                                 type="text"
-//                                 className="mt-1 block w-full  bg-[#D9D9D9] border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:ring-blue-500"
-//                             />
-//                         </div>
-//                         <div className="col-span-2">
-//                             <label className="block text-gray-700">Gender</label>
-//                             <div className="mt-2">
-//                                 <label className="inline-flex items-center">
-//                                     <input
-//                                         type="radio"
-//                                         name="gender"
-//                                         value="male"
-//                                         className="form-radio text-blue-500 bg-[#D9D9D9]"
-//                                     />
-//                                     <span className="ml-2">Male</span>
-//                                 </label>
-//                                 <label className="inline-flex items-center ml-6">
-//                                     <input
-//                                         type="radio"
-//                                         name="gender"
-//                                         value="female"
-//                                         className="form-radio text-blue-500 bg-[#D9D9D9]"
-//                                     />
-//                                     <span className="ml-2">Female</span>
-//                                 </label>
-//                             </div>
-//                         </div>
-//                         <div className="col-span-2">
-//                             <label className="block text-gray-700">Address</label>
-//                             <textarea
-//                                 rows="4"
-//                                 className="mt-1 block bg-[#D9D9D9] w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:ring-blue-500"
-//                             ></textarea>
-//                         </div>
-//                     </div>
-//                     <div className="mt-6 text-right">
-//                         <button
-//                             type="submit"
-//                             className="px-6 py-2  bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
-//                         >
-//                             Submit
-//                         </button>
-//                     </div>
-//                 </form>
-//     </div>
-//   )
-// }
-
-// export default ProfileSetting
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -88,10 +7,15 @@ const ProfileSetting = () => {
     firstName: "",
     lastName: "",
     email: "",
-    mobile: "",
+    phoneNumber: "",
     gender: "",
     address: "",
   });
+  const handleRedirect = () => {
+    navigate("/myprofile");
+  };
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -100,27 +24,57 @@ const ProfileSetting = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
+  
     try {
-      // Mock API call
-      await fetch("https://jsonplaceholder.typicode.com/users", {
+      const token = localStorage.getItem("accessToken");
+  
+      if (!token) {
+        setError("Unauthorized: Please log in first.");
+        navigate("/login");
+        return;
+      }
+  
+      const response = await fetch("https://doctormanagement.onrender.com/api/v1/patients/createprofile", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,  
+        },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          gender: formData.gender,
+          address: formData.address,
+          phoneNumber: formData.phoneNumber,
+          profileUrl: formData.profileUrl || "",  
+        }),
       });
-
-      // Redirect to /myprofile with formData
-      navigate("/myprofile", { state: formData });
+  
+      const data = await response.json();
+  
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to create profile");
+      }
+  
+      alert("Profile created successfully");
+      navigate("/myprofile", { state: data });
+  
     } catch (error) {
-      console.error("Error submitting form", error);
+      console.error("Error submitting form:", error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
+  
+  
 
   return (
     <div>
-      <form
-        onSubmit={handleSubmit}
-        className="mt-6 bg-white shadow-md rounded-lg p-6"
-      >
+      <form onSubmit={handleSubmit} className="mt-6 bg-white shadow-md rounded-lg p-6">
+        {error && <p className="text-red-500 mb-4">{error}</p>}
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-gray-700">First Name*</label>
@@ -157,8 +111,8 @@ const ProfileSetting = () => {
             <label className="block text-gray-700">Mobile Number</label>
             <input
               type="text"
-              name="mobile"
-              value={formData.mobile}
+              name="phoneNumber"
+              value={formData.phoneNumber}
               onChange={handleChange}
               className="mt-1 block w-full bg-[#D9D9D9] border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:ring-blue-500"
             />
@@ -170,8 +124,9 @@ const ProfileSetting = () => {
                 <input
                   type="radio"
                   name="gender"
-                  value="male"
+                  value="Male"
                   onChange={handleChange}
+                  checked={formData.gender === "Male"}
                   className="form-radio text-blue-500 bg-[#D9D9D9]"
                 />
                 <span className="ml-2">Male</span>
@@ -180,11 +135,23 @@ const ProfileSetting = () => {
                 <input
                   type="radio"
                   name="gender"
-                  value="female"
+                  value="Female"
                   onChange={handleChange}
+                  checked={formData.gender === "Female"}
                   className="form-radio text-blue-500 bg-[#D9D9D9]"
                 />
                 <span className="ml-2">Female</span>
+              </label>
+              <label className="inline-flex items-center ml-6">
+                <input
+                  type="radio"
+                  name="gender"
+                  value="Other"
+                  onChange={handleChange}
+                  checked={formData.gender === "Other"}
+                  className="form-radio text-blue-500 bg-[#D9D9D9]"
+                />
+                <span className="ml-2">Other</span>
               </label>
             </div>
           </div>
@@ -199,14 +166,24 @@ const ProfileSetting = () => {
             ></textarea>
           </div>
         </div>
-        <div className="mt-6 text-right">
+        <div className="flex justify-between mt-6">
           <button
             type="submit"
-            className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+            disabled={loading}
+            className={`px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
           >
-            Submit
+            {loading ? "Submitting..." : "Submit"}
+          </button>
+
+          <button
+            type="button"
+            onClick={handleRedirect}
+            className={`px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring focus:ring-green-300 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+          >
+            My Profile
           </button>
         </div>
+
       </form>
     </div>
   );
