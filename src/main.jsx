@@ -23,6 +23,7 @@ import Video from "./pages/Doctors/Video.jsx";
 import VoiceCall from "./pages/Doctors/VoiceCall.jsx";
 import ChatInterface from "./pages/Doctors/ChatInterface.jsx";
 import Createdoctorprofile from "./pages/Doctors/Createdoctorprofile.jsx";
+import Sidebar from "./components/DoctorDashbaord/Sidebar.jsx";
 
 
 const router = createBrowserRouter(
@@ -41,13 +42,15 @@ const router = createBrowserRouter(
       <Route path="/accessibility" element={<Accessibility />} />
       <Route path="/termandcondition" element={<Term />} />
       <Route path="/patients" element={<PateintPortal />} />
-      <Route path="/doctorprofile" element={<Profile />}/>
+      <Route path="/doctorprofile/:id" element={<Profile />}/>
+
       <Route path="/createprofile" element={<Createdoctorprofile/>}/>
       <Route path="/patientform" element={<Patient/>}/>
       <Route path="/payment" element={<Payments/>}/>
       <Route path="/videocall" element={<Video/>}/>
       <Route path="/voicecall" element={<VoiceCall/>}/>
       <Route path="/chat" element={<ChatInterface/>}/>
+      <Route path="/dashboard" element={<Sidebar/>}/>
     </Route>
   )
 )

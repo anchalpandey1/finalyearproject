@@ -23,8 +23,10 @@ const DoctorCard = () => {
     
         navigate(`/doctorprofile/${doctor._id}`); 
     };
-    
-
+    const handleBookNow = (doctor) => {
+        localStorage.setItem("doctorId", doctor._id);  // Store Doctor ID for Appointment
+        navigate("/appointment"); // Redirect to Appointment page
+    };
     return (
         <div>
             <div className="text-center mt-12">
@@ -52,7 +54,7 @@ const DoctorCard = () => {
                                     </button>
                                     <button 
                                         className="px-8 py-2 bg-[#256BFE] text-white font-semibold rounded hover:bg-blue-600"
-                                        onClick={() => handleViewProfile(doctor)}
+                                        onClick={() => handleBookNow(doctor)}
                                     >
                                         Book Now
                                     </button>
