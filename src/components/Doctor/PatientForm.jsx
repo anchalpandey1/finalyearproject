@@ -47,7 +47,7 @@ const PatientForm = () => {
     const handleNext = async () => {
         // Save form data to localStorage before making the API call
         localStorage.setItem("patientFormData", JSON.stringify(formData));
-        // console.log("Saved Data:", formData); //here print the data sored in local storage
+        console.log("Saved Data:", formData); //here print the data sored in local storage
         const { appointmentDetails, pkgname } = formData;
         const doctorId = appointmentDetails?.doctorId;
         const userId = appointmentDetails?.userId;

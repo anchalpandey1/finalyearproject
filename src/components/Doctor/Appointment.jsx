@@ -219,7 +219,7 @@ const Appointment = () => {
                 appointmentDetails.reason,
                 appointmentDetails.status
             );
-            console.log("datalocalstorage", appointmentDetails);
+            // console.log("datalocalstorage", appointmentDetails);
             alert("Appointment data save successfully!");
             navigate("/patientform");
         } catch (error) {

@@ -1,36 +1,25 @@
- // yeah bs dummy code h page me show krne ke liye use kiya h maine 
+// yeah bs dummy code h page me show krne ke liye use kiya h maine 
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import profile from "../../assets/profile.png";
 import ProfileSetting from "../Settings/ProfileSetting";
-import NotificationSettings from "../Settings/NotificationSettings";
-import Description from "../Settings/Description";
-import Language from "../Settings/Language";
+import DashboardBox from "./DashboardBox";
+import PatientList from "./PatientList";
+import UpcomingList from "./UpcomingList";
+
 
 function Sidebar() {
-    const [activeComponent, setActiveComponent] = useState("profile"); 
+    const [activeComponent, setActiveComponent] = useState("dashboard");
     const navigate = useNavigate();
 
-    const handleLogout = async () => {
-        try {
-            const token = localStorage.getItem("accessToken"); 
-            await axios.post("https://doctormanagement.onrender.com/api/v1/patients/logout", {}, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
 
-            localStorage.clear(); 
-            navigate("/"); 
-        } catch (error) {
-            console.error("Logout failed:", error.response?.data || error.message);
-        }
-    };
     return (
         <div className="flex min-h-screen bg-white">
             {/* Sidebar */}
             <div className="w-64 bg-white shadow-lg">
-                {/* <div className="p-6 flex items-center">
+                <div className="p-6 flex items-center">
                     <img
                         src={profile}
                         alt="Profile"
@@ -40,7 +29,7 @@ function Sidebar() {
                     <div className="flex items-center space-x-2">
                         <h2 className="text-xl font-bold">Settings</h2>
                         <button className="flex items-center p-2 text-gray-500 hover:text-gray-700 focus:outline-none">
-                            
+
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 className="w-6 h-6"
@@ -53,266 +42,138 @@ function Sidebar() {
                             </svg>
                         </button>
                     </div>
-                </div> */}
+                </div>
 
                 <nav className="mt-6">
                     <ul>
                         <li
-                            onClick={() => setActiveComponent("profile")}
-                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg mb-2 ${
-                                activeComponent === "profile"
-                                    ? "bg-gray-200 text-black"
-                                    : "text-gray-600 hover:bg-gray-100"
-                            }`}
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5 mr-3"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth={2}
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M5.121 5.121A9 9 0 1118.879 18.88 9 9 0 015.121 5.121z"
-                                />
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M12 7v5l3 3"
-                                />
-                            </svg>
-                            Profile Settings
-                        </li>
-                        <li
-                                onClick={() => navigate("/privacy")}
-                                className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${
-                                    activeComponent === "privacy"
-                                        ? "bg-gray-200 text-black"
-                                        : "text-gray-600 hover:bg-gray-100"
+                            onClick={() => setActiveComponent("dashboard")}
+                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg mb-2 ${activeComponent === "dashboard"
+                                ? "bg-gray-200 text-black "
+                                : "text-gray-600 hover:bg-gray-100 "
                                 }`}
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-5 w-5 mr-3"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M6 12h12M6 6h12M6 18h12"
-                                    />
-                                </svg>
-                               Patients List
-                            </li>
-                        <li
-                            onClick={() => setActiveComponent("notification")}
-                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${
-                                activeComponent === "notification"
-                                    ? "bg-gray-200 text-black"
-                                    : "text-gray-600 hover:bg-gray-100"
-                            }`}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5 mr-3"
+                                class="h-6 w-6"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
-                                strokeWidth={2}
-                            >
+                                stroke-width="2">
                                 <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M9 12h6m-3 3v6m-3-6V6m9 6h6"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M3 3h8v8H3V3zm10 0h8v5h-8V3zM3 13h8v8H3v-8zm10 5h8v3h-8v-3zm0-5h8v3h-8v-3z"
                                 />
                             </svg>
-                            Notification Settings
+
+                            Dashboard
                         </li>
                         <li
-                            onClick={() => setActiveComponent("language")}
-                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${
-                                activeComponent === "language"
-                                    ? "bg-gray-200 text-black"
-                                    : "text-gray-600 hover:bg-gray-100"
-                            }`}
+                            onClick={() => setActiveComponent("patient")}
+                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${activeComponent === "patient"
+                                ? "bg-gray-200 text-black"
+                                : "text-gray-600 hover:bg-gray-100"
+                                }`}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5 mr-3"
+                                class="h-6 w-6"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
-                                strokeWidth={2}
-                            >
+                                stroke-width="2">
                                 <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M4 4v16m4-16v16M16 4v16m4-16v16"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M16 12h4M16 16h4M16 8h4M4 8a4 4 0 118 0 4 4 0 01-8 0zM6 20h4a2 2 0 002-2v-1a4 4 0 00-8 0v1a2 2 0 002 2z"
                                 />
                             </svg>
-                           Language
+
+                            Patients List
                         </li>
                         <li
-                            onClick={() => navigate("/termandcondition")}
-                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${
-                                activeComponent === "terms"
-                                    ? "bg-gray-200 text-black"
-                                    : "text-gray-600 hover:bg-gray-100"
-                            }`}
+                            onClick={() => setActiveComponent("upcomingappointment")}
+                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${activeComponent === "upcomingappointment"
+                                ? "bg-gray-200 text-black"
+                                : "text-gray-600 hover:bg-gray-100"
+                                }`}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5 mr-3"
+                                class="h-6 w-6"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
-                                strokeWidth={2}
-                            >
+                                stroke-width="2">
                                 <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M9 18h6m-3-6V6"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M8 2v4M16 2v4M3 8h18M21 8v11a2 2 0 01-2 2H5a2 2 0 01-2-2V8m15 10a4 4 0 10-4-4m0 0v2m0 0h2"
                                 />
                             </svg>
-                            Terms & Conditions
+
+                            Upcoming Appointment
                         </li>
                         <li
-                            onClick={() => setActiveComponent("description")}
-                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${
-                                activeComponent === "description"
-                                    ? "bg-gray-200 text-black"
-                                    : "text-gray-600 hover:bg-gray-100"
-                            }`}
+                            onClick={() => setActiveComponent("review")}
+                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${activeComponent === "review"
+                                ? "bg-gray-200 text-black"
+                                : "text-gray-600 hover:bg-gray-100"
+                                }`}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5 mr-3"
+                                class="h-6 w-6"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
-                                strokeWidth={2}
-                            >
+                                stroke-width="2">
                                 <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M4 4v16m4-16v16M16 4v16m4-16v16"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M12 2l3.09 6.26 6.91 1-5 4.87L18.18 22 12 18.26 5.82 22l1.18-7.87-5-4.87 6.91-1L12 2zM8 14H4m16 0h-4"
                                 />
                             </svg>
-                           Description
+
+                            Review
                         </li>
-                        <li
-                             onClick={() => navigate("/accessibility")}
-                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${
-                                activeComponent === "accessibility"
-                                    ? "bg-gray-200 text-black"
-                                    : "text-gray-600 hover:bg-gray-100"
-                            }`}
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5 mr-3"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth={2}
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M6 12h12M6 6h12M6 18h12"
-                                />
-                            </svg>
-                            Accessibility Statement
-                        </li>
-                        <li
-                            onClick={() => setActiveComponent("help")}
-                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${
-                                activeComponent === "help"
-                                    ? "bg-gray-200 text-black"
-                                    : "text-gray-600 hover:bg-gray-100"
-                            }`}
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5 mr-3"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth={2}
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M9 18h6m-3-6V6"
-                                />
-                            </svg>
-                            Help & Support
-                        </li>
-                        <li
-                            onClick={handleLogout}
-                            className="flex items-center px-6 py-3 cursor-pointer rounded-lg text-gray-600 hover:bg-gray-100"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5 mr-3"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth={2}
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M17 16l4-4m0 0l-4-4m4 4H7"
-                                />
-                            </svg>
-                            Logout
-                        </li>
+
+
                     </ul>
                 </nav>
             </div>
 
             {/* Main Content */}
             <div className="flex-1 p-8">
-                {activeComponent === "profile" && (
+                {activeComponent === "dashboard" && (
                     <>
-                        <h1 className="text-2xl font-semibold">Profile Settings</h1>
-                        {/* <ProfileSetting /> */}
-                        <ProfileSetting/>
-                        
+                        <h1 className="text-2xl font-semibold">Dashboard</h1>
+
+                        <DashboardBox />
+
                     </>
                 )}
-                {activeComponent === "notification" && (
+                {activeComponent === "patient" && (
                     <>
-                        <h1 className="text-2xl font-semibold"></h1>
-                        {/* <NotificationSettings /> */}
-                        <NotificationSettings/>
+                        <h1 className="text-2xl font-semibold">Patient List</h1>
+                        <PatientList />
                     </>
                 )}
-                {activeComponent === "language" && (
+                {activeComponent === "upcomingappointment" && (
                     <>
-                        <h1 className="text-2xl font-semibold"></h1>
-                        {/* <Language/> */}
-                        <Language/>
+                        <h1 className="text-2xl font-semibold">Upcoming Appointment</h1>
+<UpcomingList/>
                     </>
                 )}
-               
-                {activeComponent === "description" && (
+
+                {activeComponent === "review" && (
                     <>
-                        <h1 className="text-2xl font-semibold">Edit Description</h1>
-                        {/* <Description/> */}
-                        <Description/>
+                        <h1 className="text-2xl font-semibold">Review</h1>
+
                     </>
                 )}
-                {activeComponent === "help" && (
-                    <h1 className="text-2xl font-semibold">Help & Support</h1>
-                )}
+
             </div>
         </div>
     );
