@@ -11,6 +11,8 @@ const ProfileSetting = () => {
     gender: "",
     address: "",
   });
+  const [profileFile, setProfileFile] = useState(null);
+  
   const handleRedirect = () => {
     navigate("/myprofile");
   };
@@ -29,27 +31,29 @@ const ProfileSetting = () => {
   
     try {
       const token = localStorage.getItem("accessToken");
-  
       if (!token) {
         setError("Unauthorized: Please log in first.");
         navigate("/login");
         return;
       }
   
+      const formDataToSend = new FormData();
+      formDataToSend.append("firstName", formData.firstName);
+      formDataToSend.append("lastName", formData.lastName);
+      formDataToSend.append("gender", formData.gender);
+      formDataToSend.append("address", formData.address);
+      formDataToSend.append("phoneNumber", formData.phoneNumber);
+      if (profileFile) {
+        formDataToSend.append("profileUrl", profileFile);
+      }
+  
       const response = await fetch("https://doctormanagement.onrender.com/api/v1/patients/createprofile", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,  
+          Authorization: `Bearer ${token}`,
+          // Don't set Content-Type here, let browser set it for FormData
         },
-        body: JSON.stringify({
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          gender: formData.gender,
-          address: formData.address,
-          phoneNumber: formData.phoneNumber,
-          profileUrl: formData.profileUrl || "",  
-        }),
+        body: formDataToSend,
       });
   
       const data = await response.json();
@@ -68,6 +72,7 @@ const ProfileSetting = () => {
       setLoading(false);
     }
   };
+  
   
   
 
@@ -155,6 +160,19 @@ const ProfileSetting = () => {
               </label>
             </div>
           </div>
+
+          <div className="col-span-2">
+  <label className="block text-gray-700">Profile Image</label>
+  <input
+    type="file"
+    accept="image/*"
+    onChange={(e) => setProfileFile(e.target.files[0])}
+    className="mt-1 block w-full border bg-[#D9D9D9] border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:ring-blue-500"
+  />
+</div>
+
+
+
           <div className="col-span-2">
             <label className="block text-gray-700">Address</label>
             <textarea

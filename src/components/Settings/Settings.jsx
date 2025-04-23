@@ -3,25 +3,26 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import profile from "../../assets/profile.png";
+import profile from "../../assets/profile.webp";
 import ProfileSetting from "./ProfileSetting";
 import NotificationSettings from "./NotificationSettings";
 import Language from "./Language";
 import Description from "./Description";
-import Privacy from "./Privacy"; 
+import Privacy from "./Privacy";
+import AppointmentList from "./AppointmentList";
 function Settings() {
-    const [activeComponent, setActiveComponent] = useState("profile"); 
+    const [activeComponent, setActiveComponent] = useState("profile");
     const navigate = useNavigate();
 
     const handleLogout = async () => {
         try {
-            const token = localStorage.getItem("accessToken"); 
+            const token = localStorage.getItem("accessToken");
             await axios.post("https://doctormanagement.onrender.com/api/v1/patients/logout", {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
-            localStorage.clear(); 
-            navigate("/"); 
+            localStorage.clear();
+            navigate("/");
         } catch (error) {
             console.error("Logout failed:", error.response?.data || error.message);
         }
@@ -59,11 +60,10 @@ function Settings() {
                     <ul>
                         <li
                             onClick={() => setActiveComponent("profile")}
-                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg mb-2 ${
-                                activeComponent === "profile"
-                                    ? "bg-gray-200 text-black"
-                                    : "text-gray-600 hover:bg-gray-100"
-                            }`}
+                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg mb-2 ${activeComponent === "profile"
+                                ? "bg-gray-200 text-black"
+                                : "text-gray-600 hover:bg-gray-100"
+                                }`}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -86,37 +86,61 @@ function Settings() {
                             </svg>
                             Profile Settings
                         </li>
+
                         <li
-                                onClick={() => navigate("/privacy")}
-                                className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${
-                                    activeComponent === "privacy"
-                                        ? "bg-gray-200 text-black"
-                                        : "text-gray-600 hover:bg-gray-100"
+                            onClick={() => setActiveComponent("doctorlist")}
+                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${activeComponent === "doctorlist"
+                                ? "bg-gray-200 text-black"
+                                : "text-gray-600 hover:bg-gray-100"
                                 }`}
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-5 w-5 mr-3"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2}
                             >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-5 w-5 mr-3"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M6 12h12M6 6h12M6 18h12"
-                                    />
-                                </svg>
-                                Privacy & Policy
-                            </li>
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M9 5h11M9 12h11M9 19h11M5 5h.01M5 12h.01M5 19h.01"
+                                />
+                            </svg>
+
+                            Appointment List
+                        </li>
+
+                        <li
+                            onClick={() => navigate("/privacy")}
+                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${activeComponent === "privacy"
+                                ? "bg-gray-200 text-black"
+                                : "text-gray-600 hover:bg-gray-100"
+                                }`}
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-5 w-5 mr-3"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M6 12h12M6 6h12M6 18h12"
+                                />
+                            </svg>
+                            Privacy & Policy
+                        </li>
                         <li
                             onClick={() => setActiveComponent("notification")}
-                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${
-                                activeComponent === "notification"
-                                    ? "bg-gray-200 text-black"
-                                    : "text-gray-600 hover:bg-gray-100"
-                            }`}
+                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${activeComponent === "notification"
+                                ? "bg-gray-200 text-black"
+                                : "text-gray-600 hover:bg-gray-100"
+                                }`}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -136,11 +160,10 @@ function Settings() {
                         </li>
                         <li
                             onClick={() => setActiveComponent("language")}
-                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${
-                                activeComponent === "language"
-                                    ? "bg-gray-200 text-black"
-                                    : "text-gray-600 hover:bg-gray-100"
-                            }`}
+                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${activeComponent === "language"
+                                ? "bg-gray-200 text-black"
+                                : "text-gray-600 hover:bg-gray-100"
+                                }`}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -156,15 +179,14 @@ function Settings() {
                                     d="M4 4v16m4-16v16M16 4v16m4-16v16"
                                 />
                             </svg>
-                           Language
+                            Language
                         </li>
                         <li
                             onClick={() => navigate("/termandcondition")}
-                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${
-                                activeComponent === "terms"
-                                    ? "bg-gray-200 text-black"
-                                    : "text-gray-600 hover:bg-gray-100"
-                            }`}
+                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${activeComponent === "terms"
+                                ? "bg-gray-200 text-black"
+                                : "text-gray-600 hover:bg-gray-100"
+                                }`}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -184,11 +206,10 @@ function Settings() {
                         </li>
                         <li
                             onClick={() => setActiveComponent("description")}
-                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${
-                                activeComponent === "description"
-                                    ? "bg-gray-200 text-black"
-                                    : "text-gray-600 hover:bg-gray-100"
-                            }`}
+                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${activeComponent === "description"
+                                ? "bg-gray-200 text-black"
+                                : "text-gray-600 hover:bg-gray-100"
+                                }`}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -204,15 +225,14 @@ function Settings() {
                                     d="M4 4v16m4-16v16M16 4v16m4-16v16"
                                 />
                             </svg>
-                           Description
+                            Description
                         </li>
                         <li
-                             onClick={() => navigate("/accessibility")}
-                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${
-                                activeComponent === "accessibility"
-                                    ? "bg-gray-200 text-black"
-                                    : "text-gray-600 hover:bg-gray-100"
-                            }`}
+                            onClick={() => navigate("/accessibility")}
+                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${activeComponent === "accessibility"
+                                ? "bg-gray-200 text-black"
+                                : "text-gray-600 hover:bg-gray-100"
+                                }`}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -230,13 +250,36 @@ function Settings() {
                             </svg>
                             Accessibility Statement
                         </li>
+
+                        <li
+                            onClick={() => navigate("/")}
+                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${activeComponent === "bookappointment"
+                                ? "bg-gray-200 text-black"
+                                : "text-gray-600 hover:bg-gray-100"
+                                }`}
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-5 w-5 mr-3"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M6 12h12M6 6h12M6 18h12"
+                                />
+                            </svg>
+                            Book Appointment
+                        </li>
                         <li
                             onClick={() => setActiveComponent("help")}
-                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${
-                                activeComponent === "help"
-                                    ? "bg-gray-200 text-black"
-                                    : "text-gray-600 hover:bg-gray-100"
-                            }`}
+                            className={`flex items-center px-6 py-3 cursor-pointer rounded-lg ${activeComponent === "help"
+                                ? "bg-gray-200 text-black"
+                                : "text-gray-600 hover:bg-gray-100"
+                                }`}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -286,6 +329,12 @@ function Settings() {
                         <ProfileSetting />
                     </>
                 )}
+                {activeComponent === "doctorlist" && (
+                    <>
+                        <h1 className="text-2xl font-semibold">Appointment List</h1>
+                        <AppointmentList />
+                    </>
+                )}
                 {activeComponent === "notification" && (
                     <>
                         <h1 className="text-2xl font-semibold"></h1>
@@ -295,14 +344,14 @@ function Settings() {
                 {activeComponent === "language" && (
                     <>
                         <h1 className="text-2xl font-semibold"></h1>
-                        <Language/>
+                        <Language />
                     </>
                 )}
-               
+
                 {activeComponent === "description" && (
                     <>
                         <h1 className="text-2xl font-semibold">Edit Description</h1>
-                        <Description/>
+                        <Description />
                     </>
                 )}
                 {activeComponent === "help" && (

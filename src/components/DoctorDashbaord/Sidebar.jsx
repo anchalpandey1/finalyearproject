@@ -24,7 +24,7 @@ function Sidebar() {
                         src={profile}
                         alt="Profile"
                         className="w-16 h-16 rounded-full mx-5 cursor-pointer"
-                        onClick={() => navigate("/myprofile")} //yhàpe editprofile page me code add kr ke ushka link dena h yaad rhe 
+                        onClick={() => navigate("/editprofile")} //yhàpe editprofile page me code add kr ke ushka link dena h yaad rhe 
                     />
                     <div className="flex items-center space-x-2">
                         <h2 className="text-xl font-bold">Settings</h2>

@@ -20,11 +20,11 @@ const UpdateProfile = () => {
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem("accessToken"); 
-    
+  
         if (!token) {
           throw new Error("No access token found. Please log in.");
         }
-    
+  
         const response = await fetch("https://doctormanagement.onrender.com/api/v1/patients/getUser", {
           method: "GET",
           headers: {
@@ -32,26 +32,34 @@ const UpdateProfile = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-    
+  
         if (response.status === 401) {
           throw new Error("Session expired. Please log in again.");
         }
-    
+  
         if (!response.ok) {
           throw new Error("Failed to fetch user data.");
         }
-    
+  
         const data = await response.json();
-    
+  
         if (data.status) {
+          const user = data.userInfo;
+  
           setFormData({
-            firstName: data.userInfo.firstName || "",
-            lastName: data.userInfo.lastName || "",
-            email: data.userInfo.email || "",
-           phoneNumber: data.userInfo.phoneNumber || "",
-            gender: data.userInfo.gender || "",
-            address: data.userInfo.address || "",
+            firstName: user.firstName || "",
+            lastName: user.lastName || "",
+            email: user.email || "",
+            phoneNumber: user.phoneNumber || "",
+            gender: user.gender || "",
+            address: user.address || "",
           });
+  
+          // Set profile image from backend
+          if (user.profileUrl) {
+            setProfileImage(`https://doctormanagement.onrender.com/image/${user.profileUrl}`);
+
+          }
         } else {
           throw new Error(data.message || "Something went wrong.");
         }
@@ -60,10 +68,10 @@ const UpdateProfile = () => {
         console.error("Error fetching user data:", err);
       }
     };
-    
-
+  
     fetchUserData();
   }, []);
+  
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];

@@ -14,16 +14,22 @@ const CreateProfile = () => {
     phoneNumber: "",
     gender: "",
     experience: "",
+    profileUrl: "",
   });
-
+  const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
+  const [profileImage, setProfileImage] = useState(null);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -37,21 +43,30 @@ const CreateProfile = () => {
         return navigate("/login");
       }
 
-      const updatedFormData = {
-        ...formData,
-        languages: formData.languages.split(",").map((lang) => lang.trim()), // Convert to array if required
-        experience: Number(formData.experience), // Ensure experience is a number
-      };
+      
+      const form = new FormData();
+      form.append("fullName", formData.fullName);
+      form.append("qualification", formData.qualification);
+      form.append("specialty", formData.specialty);
+      form.append("bio", formData.bio);
+      form.append("languages", JSON.stringify(formData.languages.split(",").map((l) => l.trim())));
+      form.append("hospital", formData.hospital);
+      form.append("experience", formData.experience);
+      form.append("typesOfSurgeon", formData.typesOfSurgeon);
+      form.append("phoneNumber", formData.phoneNumber);
+      form.append("gender", formData.gender);
+      if (imageFile) {
+        form.append("profileUrl", imageFile);
+      }
 
       const response = await fetch(
         "https://doctormanagement.onrender.com/api/v1/doctors/createprofile",
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(updatedFormData),
+          body: form,
         }
       );
 
@@ -60,7 +75,9 @@ const CreateProfile = () => {
       if (!response.ok) {
         throw new Error(data.message || "Failed to create profile");
       }
-
+      localStorage.setItem("accessToken",token);
+                localStorage.setItem("doctorId", data.doctor._id); 
+                
       alert("Profile created successfully");
       navigate("/dashboard", { state: data });
     } catch (error) {
@@ -192,6 +209,18 @@ const CreateProfile = () => {
             </select>
           </div>
         </div>
+        <div className="col-span-2 mt-1">
+            <label className="block text-gray-700">Upload Profile Image*</label>
+            <input
+              type="file"
+              name="profileUrl"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="mt-1 block w-full border border-gray-300 rounded-lg p-2"
+              required
+            />
+          </div>
+        
         <div className="flex justify-between mt-6">
           <button
             type="submit"

@@ -24,6 +24,7 @@ import VoiceCall from "./pages/Doctors/VoiceCall.jsx";
 import ChatInterface from "./pages/Doctors/ChatInterface.jsx";
 import Createdoctorprofile from "./pages/Doctors/Createdoctorprofile.jsx";
 import Sidebar from "./components/DoctorDashbaord/Sidebar.jsx";
+import EditMyProfile from "./pages/Doctors/EditMyProfile.jsx";
 
 
 const router = createBrowserRouter(
@@ -51,6 +52,7 @@ const router = createBrowserRouter(
       <Route path="/voicecall" element={<VoiceCall/>}/>
       <Route path="/chat" element={<ChatInterface/>}/>
       <Route path="/dashboard" element={<Sidebar/>}/>
+      <Route path="/editprofile" element={<EditMyProfile/>}/>
     </Route>
   )
 )
